@@ -1,0 +1,14 @@
+[app]
+name = "默认打开方式"
+id = "dev.local.defaultapp"
+version = "1.0.0"
+executable = "defaultapp"
+package = "./cmd/defaultapp"
+icon = "assets/app-icon.png"
+
+[build]
+out = "outputs/build"
+
+[mac]
+min_system = "13.0"
+category = "public.app-category.utilities"

@@ -1,0 +1,6 @@
+/work/
+/outputs/build/
+/outputs/*.zip
+/defaultapp
+.DS_Store
+/.hallmark/

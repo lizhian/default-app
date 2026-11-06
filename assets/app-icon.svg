@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+<defs>
+<linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffddb9"/><stop offset="100%" stop-color="#edaa7c"/></linearGradient>
+<linearGradient id="blue" x1="0%" y1="0%" x2="80%" y2="100%"><stop stop-color="#55bfff"/><stop offset="100%" stop-color="#1768ec"/></linearGradient>
+<linearGradient id="silver" x1="0%" y1="0%" x2="100%" y2="100%"><stop stop-color="#ffffff"/><stop offset="25%" stop-color="#e8edf3"/><stop offset="52%" stop-color="#8d98a6"/><stop offset="73%" stop-color="#ecf1f7"/><stop offset="100%" stop-color="#a5afbb"/></linearGradient>
+<linearGradient id="cream" x1="0%" y1="0%" x2="65%" y2="100%"><stop stop-color="#ffffff"/><stop offset="100%" stop-color="#f2eadc"/></linearGradient>
+<linearGradient id="mint" x1="0%" y1="0%" x2="65%" y2="100%"><stop stop-color="#9bf3d8"/><stop offset="100%" stop-color="#319d86"/></linearGradient>
+<filter id="shadow" x="-50%" y="-50%" width="200%" height="220%"><feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#152439" flood-opacity=".18"/></filter>
+<linearGradient id="coral" x1="0%" y1="0%" x2="100%" y2="100%"><stop stop-color="#e78861"/><stop offset="100%" stop-color="#bf5946"/></linearGradient>
+</defs>
+<rect x="78" y="88" width="868" height="868" rx="196" fill="#152439" opacity=".10"/>
+<rect x="78" y="72" width="868" height="868" rx="196" fill="url(#bg)"/>
+
+<g transform="rotate(-9 460 470)" filter="url(#shadow)">
+ <rect x="265" y="222" width="380" height="530" rx="54" fill="#b96b48" opacity=".20" transform="translate(0 14)"/>
+ <path d="M311 222 H537 L645 330 V698 Q645 752 591 752 H319 Q265 752 265 698 V276 Q265 222 311 222Z" fill="url(#cream)"/>
+ <path d="M537 222 V289 Q537 330 578 330 H645" fill="#eddbc6"/>
+ <path d="M333 402 H515 M333 463 H485" stroke="#c7b59c" stroke-width="23" stroke-linecap="round"/>
+</g>
+<g filter="url(#shadow)">
+ <rect x="471" y="498" width="305" height="305" rx="91" fill="#ad503a" transform="translate(0 8)"/>
+ <rect x="471" y="498" width="305" height="305" rx="91" fill="url(#coral)"/>
+ <rect x="534" y="560" width="70" height="70" rx="19" fill="#fff6e6"/>
+ <rect x="643" y="560" width="70" height="70" rx="19" fill="#fff6e6"/>
+ <rect x="534" y="669" width="70" height="70" rx="19" fill="#fff6e6"/>
+ <path d="M646 705 L669 728 L715 678" stroke="#fff6e6" stroke-width="21" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</g>
+
+</svg>
