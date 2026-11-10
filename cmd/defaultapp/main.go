@@ -23,13 +23,15 @@ func id(name string) ui.ID { return tree.ID(page, name) }
 var categoryScope = tree.Feature("categories")
 
 type row struct {
-	kind     fileKind
-	typ      association.Type
-	err      error
-	selected bool
-	result   string
-	outcome  int
-	modified time.Time
+	kind       fileKind
+	typ        association.Type
+	err        error
+	selected   bool
+	result     string
+	outcome    int
+	modified   time.Time
+	previews   []association.Application
+	previewErr string
 }
 type model struct {
 	view                    flex.View
@@ -96,6 +98,21 @@ func (m *model) readRows(rows []row) []row {
 	for i := range rows {
 		rows[i].typ, rows[i].err = m.service.Query(rows[i].kind.ext)
 		m.cacheIcon(rows[i].typ.Default.Path)
+	}
+	types := make([]string, 0, len(rows))
+	for _, r := range rows {
+		types = append(types, r.typ.ID)
+	}
+	candidates, err := previewCandidates(types)
+	for i := range rows {
+		rows[i].previews = candidates[rows[i].typ.ID]
+		rows[i].previewErr = ""
+		if err != nil {
+			rows[i].previewErr = err.Error()
+		}
+		for _, candidate := range rows[i].previews {
+			m.cacheIcon(candidate.Path)
+		}
 	}
 	return rows
 }
@@ -186,12 +203,20 @@ func (m *model) addCustom() {
 	}
 	m.run(func() func() {
 		typ, err := m.service.Query(ext)
+		candidates, previewErr := previewCandidates([]string{typ.ID})
+		for _, candidate := range candidates[typ.ID] {
+			m.cacheIcon(candidate.Path)
+		}
 		return func() {
 			if err != nil {
 				m.notice = err.Error()
 				return
 			}
-			m.rows = append(m.rows, row{kind: fileKind{ext, "自定义类型", category}, typ: typ, selected: true})
+			added := row{kind: fileKind{ext, "自定义类型", category}, typ: typ, selected: true, previews: candidates[typ.ID]}
+			if previewErr != nil {
+				added.previewErr = previewErr.Error()
+			}
+			m.rows = append(m.rows, added)
 			m.notice = "已添加 ." + ext + "；可选择应用后修改。"
 			m.savePreferences()
 			// Schedule candidate loading after this update has released the busy state.
@@ -265,7 +290,7 @@ func (m *model) applyChange(exts []string, target association.Application, undo 
 }
 func (m *model) config() app.Config {
 	theme := appTheme()
-	config := app.Config{Tree: &tree, Title: "默认打开方式", Width: 980, Height: 700, MinWidth: 880, MinHeight: 620, WindowMode: app.WindowCustomTitlebar, TitlebarHeight: 56, TextInput: flex.Fields(&m.search, &m.custom, &m.appPath)}
+	config := app.Config{Tree: &tree, Title: "默认打开方式", Width: 1160, Height: 700, MinWidth: 1100, MinHeight: 620, WindowMode: app.WindowCustomTitlebar, TitlebarHeight: 56, TextInput: flex.Fields(&m.search, &m.custom, &m.appPath)}
 	leading, trailing := app.TitlebarInsets()
 	config.OnCloseRequest = func(allow func()) {
 		if m.busy {
@@ -332,6 +357,7 @@ func (m *model) fileList(f *flex.Frame, theme ui.Theme) {
 			f.Text("名称").Grow(1).FontSize(11).Muted()
 			f.Text("分类").Width(72).FontSize(11).Muted()
 			f.Text("当前默认应用").Width(168).FontSize(11).Muted()
+			f.Text("预览来源（候选）").Width(156).FontSize(11).Muted()
 		})
 		f.Divider()
 		f.ScrollArea(id("file-list")).Grow(1).Children(func() {
@@ -394,6 +420,7 @@ func (m *model) fileList(f *flex.Frame, theme ui.Theme) {
 							ext := r.kind.ext
 							m.window.Post(func() { m.quickApplication(ext, appCell.Rect()) })
 						}
+						m.previewCell(f, r)
 					})
 				})
 				if container.Clicked() {

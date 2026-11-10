@@ -29,6 +29,8 @@ Open the DMG and drag “默认打开方式” into Applications. Releases are u
 
 macOS associations apply to system file types. Multiple extensions sharing a type may be affected together; the scope panel lists related extensions. Roles with no previous default may not be fully restorable; the app reports this limitation.
 
+- Preview source (candidates): shows apps whose Quick Look extensions declare support for the system file type. `+N` indicates more candidates; click for all candidates and extension IDs. Read-only, not the actual active provider. “未识别” means unidentified, not that preview is unavailable. Refresh rescans extensions.
+
 ## Build from source
 
 Requires Go 1.27.3+, Xcode Command Line Tools and macOS 13+.

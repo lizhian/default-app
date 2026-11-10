@@ -1,7 +1,7 @@
 [app]
 name = "默认打开方式"
 id = "dev.local.defaultapp"
-version = "1.0.1"
+version = "1.1.0"
 executable = "defaultapp"
 package = "./cmd/defaultapp"
 icon = "assets/app-icon.png"
