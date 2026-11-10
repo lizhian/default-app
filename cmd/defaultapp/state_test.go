@@ -63,3 +63,31 @@ func TestNoOpDoesNotReorderType(t *testing.T) {
 		t.Fatal("no-op must not claim a new modification")
 	}
 }
+
+func TestSelectVisibleReplacesPreviousSelection(t *testing.T) {
+	m := &model{rows: []row{
+		{kind: fileKind{"go", "Go", "编程"}, selected: true},
+		{kind: fileKind{"jpg", "JPEG", "图片"}},
+		{kind: fileKind{"png", "PNG", "图片"}},
+	}}
+	for i, category := range categories {
+		if category == "图片" {
+			m.category = i
+		}
+	}
+	m.selectVisibleRows()
+	if got := m.selected(); len(got) != 2 || got[0] != "jpg" || got[1] != "png" {
+		t.Fatalf("category selection includes hidden rows: %v", got)
+	}
+	m.search.SetText("PNG")
+	m.selectVisibleRows()
+	if got := m.selected(); len(got) != 1 || got[0] != "png" {
+		t.Fatalf("search selection includes previous results: %v", got)
+	}
+	m.category = 0
+	m.search.SetText("go")
+	m.selectVisibleRows()
+	if got := m.selected(); len(got) != 1 || got[0] != "go" {
+		t.Fatalf("selection was accumulated after another filter: %v", got)
+	}
+}

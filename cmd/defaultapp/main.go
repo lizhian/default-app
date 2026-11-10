@@ -301,9 +301,7 @@ func (m *model) config() app.Config {
 								m.addCustom()
 							}
 							if f.Button(id("select-visible"), "全选结果").Ghost().Disabled(m.busy || len(m.visibleRows()) == 0).Clicked() {
-								for _, i := range m.visibleRows() {
-									m.rows[i].selected = true
-								}
+								m.selectVisibleRows()
 								m.loadApps()
 							}
 							if f.Button(id("clear"), "取消选择").Ghost().Disabled(m.busy || len(m.selected()) == 0).Clicked() {

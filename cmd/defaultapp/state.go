@@ -180,6 +180,15 @@ func (m *model) recordResults(before, after []row, results []association.Result,
 	m.notice = fmt.Sprintf("%s完成：%d 项成功，%d 项失败。", action, succeeded, len(results)-succeeded)
 	m.savePreferences()
 }
+func (m *model) selectVisibleRows() {
+	for i := range m.rows {
+		m.rows[i].selected = false
+	}
+	for _, i := range m.visibleRows() {
+		m.rows[i].selected = true
+	}
+}
+
 func (m *model) visibleRows() []int {
 	query := strings.ToLower(strings.TrimSpace(m.search.Text()))
 	var visible []int
